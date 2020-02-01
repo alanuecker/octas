@@ -1,0 +1,10 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["plugin:prettier/recommended", "airbnb"],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "arrow-body-style": "off"
+  }
+}
