@@ -1,12 +1,8 @@
 import * as THREE from 'three';
 
 export default class Directional extends THREE.DirectionalLight {
-  constructor() {
-    super(0xffffff, 1);
-
-    this.color.setHSL(0.1, 1, 0.95);
-    this.position.set(-1, 1.75, 1);
-    this.position.multiplyScalar(30);
+  constructor(color, intensity) {
+    super(color, intensity);
 
     this.castShadow = true;
 
@@ -14,7 +10,7 @@ export default class Directional extends THREE.DirectionalLight {
     this.shadow.mapSize.height = 2048;
 
     // shadow camera
-    const d = 50;
+    const d = 400;
     this.shadow.camera.left = -d;
     this.shadow.camera.right = d;
     this.shadow.camera.top = d;

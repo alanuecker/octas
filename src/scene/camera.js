@@ -2,9 +2,9 @@ import * as THREE from 'three';
 
 export default class Camera extends THREE.PerspectiveCamera {
   constructor() {
-    super(30, window.innerWidth / window.innerHeight, 1, 5000);
+    super(50, window.innerWidth / window.innerHeight, 1, 5000);
 
-    this.position.z = 250;
+    this.position.set(-1200, 200, -390);
 
     this.pauseRender = false;
     window.addEventListener(

@@ -5,17 +5,33 @@ import Octahedron from '../presets/octahedron';
 export default class Octas extends THREE.Group {
   constructor() {
     super();
+
+    this.width = 200;
+    this.height = 150;
+    this.depth = 200;
+
     this.createOctahedrons();
   }
 
-  createOctahedrons = () => {
-    const material = new THREE.MeshLambertMaterial({ color: 0xf0f0f0 });
+  getRandomInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
 
-    for (let i = 0; i < 1; i += 1) {
-      const octaGeometry = new Octahedron({ radius: 10, height: 2 });
+  createOctahedrons = () => {
+    const material = new THREE.MeshLambertMaterial({ color: 0x5d5b6a });
+
+    for (let i = 0; i < 50; i += 1) {
+      const octaGeometry = new Octahedron({
+        radius: this.getRandomInt(10, 20),
+        height: this.getRandomInt(2, 4),
+      });
       const octa = new THREE.Mesh(octaGeometry, material);
       octa.castShadow = true;
-      octa.position.set(i, 15, 0);
+      octa.position.set(
+        this.getRandomInt(-this.width, this.width),
+        this.getRandomInt(-this.height, this.height) + this.height * 1.5,
+        this.getRandomInt(-this.depth, this.depth),
+      );
       this.add(octa);
     }
   };

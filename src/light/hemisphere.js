@@ -1,11 +1,9 @@
 import * as THREE from 'three';
 
 export default class Hemisphere extends THREE.HemisphereLight {
-  constructor(color, groundColor) {
-    super(0xffffff, 0xffffff, 0.6);
+  constructor(color, groundColor, intensity) {
+    super(color, groundColor, intensity);
 
-    this.color = color;
-    this.groundColor = groundColor;
-    this.position.set(0, 50, 0);
+    this.position.set(0, 200, 0);
   }
 }

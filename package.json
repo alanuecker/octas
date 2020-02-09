@@ -8,6 +8,7 @@
     "start": "webpack-dev-server --open"
   },
   "dependencies": {
+    "dat.gui": "^0.7.6",
     "three": "^0.112.1"
   },
   "devDependencies": {
