@@ -6,9 +6,9 @@ export default class Octas extends THREE.Group {
   constructor() {
     super();
 
-    this.width = 200;
+    this.width = 250;
     this.height = 150;
-    this.depth = 200;
+    this.depth = 250;
 
     this.createOctahedrons();
   }
