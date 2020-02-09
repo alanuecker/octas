@@ -1,50 +1,51 @@
 import * as THREE from 'three';
-import Octahedron from './octahedron';
+import Renderer from './scene/renderer';
+import Camera from './scene/camera';
+import Octas from './scene/octas';
+import Hemisphere from './light/hemisphere';
+import Directional from './light/directional';
+import Ground from './presets/ground';
+import Sky from './light/sky';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000,
-);
+const camera = new Camera();
 
-camera.position.z = 5;
-
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setClearColor(0xffffff, 1);
-renderer.setSize(window.innerWidth, window.innerHeight);
+const renderer = new Renderer({ antialias: true });
 document.body.appendChild(renderer.domElement);
 
-const octaGeometry = new Octahedron({ radius: 2, height: 2 });
-const material = new THREE.MeshNormalMaterial();
-const octa = new THREE.Mesh(octaGeometry, material);
-scene.add(octa);
+const octas = new Octas();
+scene.add(octas);
 
-const light = new THREE.PointLight(0xffffff);
-light.position.set(10, 0, 25);
-scene.add(light);
+const hemiColor = new THREE.Color('hsl(44, 2%, 31%)');
+const groundColor = new THREE.Color('hsl(4, 2%, 12%)');
 
-let pauseRender = false;
-window.addEventListener(
-  'resize',
-  () => {
-    pauseRender = true;
-    camera.aspect = window.innerWidth / window.innerHeight;
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    camera.updateProjectionMatrix();
-    pauseRender = false;
-  },
-  false,
-);
+const hemiLight = new Hemisphere(hemiColor, groundColor);
+scene.add(hemiLight);
 
-const render = () => {
-  if (pauseRender) return;
-  requestAnimationFrame(render);
+const dirLight = new Directional();
+scene.add(dirLight);
 
-  octa.rotation.y += 0.01;
-  renderer.render(scene, camera);
+const ground = new Ground(groundColor);
+scene.add(ground);
+
+const uniforms = {
+  topColor: { value: hemiColor },
+  bottomColor: { value: new THREE.Color(0xf0f0f0) },
+  offset: { value: 33 },
+  exponent: { value: 0.6 },
 };
 
-// Calling the render function
-render();
+const sky = new Sky(uniforms);
+scene.add(sky);
+
+scene.background = new THREE.Color('hsl(216, 0%, 100%)');
+scene.fog = new THREE.Fog(scene.background, 1, 5000);
+scene.fog.color.copy(uniforms.bottomColor.value);
+
+renderer.renderScene({
+  scene,
+  camera,
+  cb: () => {
+    octas.render();
+  },
+});
