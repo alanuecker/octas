@@ -18,7 +18,7 @@ export default class Octas extends THREE.Group {
   };
 
   createOctahedrons = () => {
-    const material = new THREE.MeshLambertMaterial({ color: 0x5d5b6a });
+    const material = new THREE.MeshLambertMaterial({ color: 0xffffff });
 
     for (let i = 0; i < 50; i += 1) {
       const octaGeometry = new Octahedron({
