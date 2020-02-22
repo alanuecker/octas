@@ -6,9 +6,17 @@ import Camera from './scene/camera';
 import Octas from './scene/octas';
 import Hemisphere from './light/hemisphere';
 import Directional from './light/directional';
-import Ground from './presets/ground';
-// import Sky from './light/sky';
 import GUI from './gui';
+import Mountain from './presets/terrain';
+
+const hemiColor = new THREE.Color(0x222222);
+const hemiGroundColor = new THREE.Color(0x222222);
+const terrainColor = new THREE.Color(0x222222);
+const sceneBackgroundColor = new THREE.Color(0xffffff);
+const dirColor = new THREE.Color(0x758184);
+const fogColor = new THREE.Color(0xffffff);
+const fogFar = 3000;
+const octaColor = new THREE.Color(0xff0000);
 
 const scene = new THREE.Scene();
 const camera = new Camera();
@@ -21,48 +29,30 @@ controls.autoRotate = true;
 controls.autoRotateSpeed = 1;
 controls.update();
 
-const octas = new Octas();
+const octas = new Octas(octaColor);
 scene.add(octas);
 
-const hemiColor = new THREE.Color(0x222222);
-const groundColor = new THREE.Color(0x222222);
-const skyBottomColor = new THREE.Color(0x0);
-const dirColor = new THREE.Color(0x758184);
-const fogColor = new THREE.Color(0xffffff);
-const fogFar = 2200;
-
-const hemiLight = new Hemisphere(hemiColor, groundColor, 1);
+const hemiLight = new Hemisphere(hemiColor, hemiGroundColor, 1);
 scene.add(hemiLight);
 
 const dirLight = new Directional(dirColor, 1);
 scene.add(dirLight);
 
-const ground = new Ground(groundColor);
-scene.add(ground);
+const terrain = new Mountain(terrainColor);
+scene.add(terrain);
 
-const uniforms = {
-  topColor: { value: hemiColor },
-  bottomColor: { value: skyBottomColor },
-  offset: { value: 20 },
-  exponent: { value: 0.5 },
-};
-
-// const sky = new Sky(uniforms);
-// scene.add(sky);
-
-scene.background = new THREE.Color(0xffffff);
+scene.background = sceneBackgroundColor;
 scene.fog = new THREE.Fog(scene.background, 1, fogFar);
 scene.fog.color = fogColor;
 
 // eslint-disable-next-line no-unused-vars
 const gui = new GUI({
   hemiLight,
-  ground,
   dirLight,
-  skyTop: uniforms.topColor.value,
-  skyBottom: uniforms.bottomColor.value,
+  terrain,
   scene,
-  // sky,
+  controls,
+  octas,
 });
 
 renderer.renderScene({

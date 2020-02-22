@@ -3,22 +3,22 @@ import * as THREE from 'three';
 import Octahedron from '../presets/octahedron';
 
 export default class Octas extends THREE.Group {
-  constructor() {
+  constructor(color) {
     super();
 
     this.width = 250;
     this.height = 150;
     this.depth = 250;
 
-    this.createOctahedrons();
+    this.createOctahedrons(color);
   }
 
   getRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  createOctahedrons = () => {
-    const material = new THREE.MeshLambertMaterial({ color: 0xffffff });
+  createOctahedrons = (color) => {
+    const material = new THREE.MeshLambertMaterial({ color });
 
     for (let i = 0; i < 50; i += 1) {
       const octaGeometry = new Octahedron({
@@ -34,6 +34,13 @@ export default class Octas extends THREE.Group {
       );
       this.add(octa);
     }
+  };
+
+  updateColor = (color) => {
+    this.children.forEach((octa) => {
+      // eslint-disable-next-line no-param-reassign
+      octa.material.color = color;
+    });
   };
 
   render = () => {

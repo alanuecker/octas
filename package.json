@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "dat.gui": "^0.7.6",
+    "simplex-noise": "^2.4.0",
     "three": "^0.112.1"
   },
   "devDependencies": {
